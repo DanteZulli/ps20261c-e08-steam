@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #1b2838;
+  color: #c6d4df;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+a {
+  color: #66c0f4;
+  text-decoration: none;
+}
+a:hover {
+  color: #fff;
+}
