@@ -11,13 +11,15 @@ Implementación simplificada tipo tienda Steam como caso de estudio para la mate
 | **Asignatura** | Proyecto de Software |
 | **Docente a cargo** | Ing. Damián Santos |
 | **Docente** | Ing. Maximiliano Santos |
-| **Día y horario** | Martes 18 a 22 hs |
 | **Director** | Esp. Lic. Gustavo Siciliano |
 
 ### Integrantes
 
-- Nazareno Galvan
-- Darío Casais
+- Dante Zulli
+- Gianluca Pugente
+- Santino Altieri
+- Axel Joel Insfran
+- Agustín Tambosco
 
 ## Sobre el proyecto
 
