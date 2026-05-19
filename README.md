@@ -40,4 +40,4 @@ npm run dev:client  # solo frontend
 npm run reset     # borra la DB, la recrea y la seedea de nuevo
 ```
 
-UNSAM — Licenciatura en Sistemas
+UNLa — Licenciatura en Sistemas
