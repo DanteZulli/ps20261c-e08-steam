@@ -11,7 +11,7 @@
 | **Docente** | Ing. Maximiliano Santos |
 | **Director** | Esp. Lic. Gustavo Siciliano |
 | **Prof. Adjunto** | Nazareno Galvan |
-| **JTP** | Darío Casais |
+| **Prof. Adjunto** | Darío Casais |
 
 ### Integrantes
 
