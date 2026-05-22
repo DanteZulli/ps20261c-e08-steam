@@ -119,6 +119,9 @@ function App() {
                 backgroundColor: '#2a475e',
                 padding: '1rem',
                 borderRadius: '10px',
+                backgroundImage: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(' + juego.imagen_url + ')',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
               }}
             >
               <h2>{juego.titulo}</h2>
