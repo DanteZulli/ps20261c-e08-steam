@@ -31,13 +31,13 @@ function seed() {
     insertUsuario.run('bob', 'bob@test.com', '123456', '/images/avatarhombre.png');
 
     const juegos = [
-      ['Dark Souls III', 'RPG de acción en un mundo oscuro', 59.99, '/images/darksoul3.jpg', 'RPG', '2016-03-24'],
-      ['Hollow Knight', 'Metroidvania de insectos en un reino caído', 14.99, '/images/hollowknight.webp', 'Metroidvania', '2017-02-24'],
-      ['Stardew Valley', 'Granja, amistades y aventuras', 9.99, '/images/stardewwalley.jpg', 'Simulación', '2016-02-26'],
-      ['Celeste', 'Plataformero sobre una montaña y uno mismo', 19.99, '/images/celeste.webp', 'Plataformas', '2018-01-25'],
-      ['Portal 2', 'Puzzles cooperativos con portales', 9.99, '/images/portal2.webp', 'Puzzle', '2011-04-18'],
-      ['Elden Ring', 'Mundo abierto de fantasía oscura', 59.99, '/images/eldenring.webp', 'RPG', '2022-02-25'],
-      ['Hades', 'Roguelike mitológico', 24.99, '/images/hades.webp', 'Roguelike', '2020-09-17'],
+      ['Dark Souls III', 'RPG de acción en un mundo oscuro', 59.99, 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/374320/header.jpg', 'RPG', '2016-03-24'],
+      ['Hollow Knight', 'Metroidvania de insectos en un reino caído', 14.99, 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg', 'Metroidvania', '2017-02-24'],
+      ['Stardew Valley', 'Granja, amistades y aventuras', 9.99, 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/413150/header.jpg', 'Simulación', '2016-02-26'],
+      ['Celeste', 'Plataformero sobre una montaña y uno mismo', 19.99, 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/504230/header.jpg', 'Plataformas', '2018-01-25'],
+      ['Portal 2', 'Puzzles cooperativos con portales', 9.99, 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/620/header.jpg', 'Puzzle', '2011-04-18'],
+      ['Elden Ring', 'Mundo abierto de fantasía oscura', 59.99, 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg', 'RPG', '2022-02-25'],
+      ['Hades', 'Roguelike mitológico', 24.99, 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/header.jpg', 'Roguelike', '2020-09-17'],
     ];
 
     for (const j of juegos) {
