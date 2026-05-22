@@ -1,4 +1,7 @@
 const { getDb } = require('./init');
+const crypto = require('crypto');
+
+const hash = (s) => crypto.createHash('sha256').update(s).digest('hex');
 
 function seed() {
   const db = getDb();
@@ -26,9 +29,9 @@ function seed() {
   );
 
   const transaction = db.transaction(() => {
-    insertUsuario.run('dante', 'dante@test.com', '123456', '/images/avatarhombre.png');
-    insertUsuario.run('alice', 'alice@test.com', '123456', '/images/avatarmujer.png');
-    insertUsuario.run('bob', 'bob@test.com', '123456', '/images/avatarhombre.png');
+    insertUsuario.run('dante', 'dante@test.com', hash('123456'), '/images/avatarhombre.png');
+    insertUsuario.run('alice', 'alice@test.com', hash('123456'), '/images/avatarmujer.png');
+    insertUsuario.run('bob', 'bob@test.com', hash('123456'), '/images/avatarhombre.png');
 
     const juegos = [
       ['Dark Souls III', 'RPG de acción en un mundo oscuro', 59.99, '/images/darksoul3.jpg', 'RPG', '2016-03-24'],
