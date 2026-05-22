@@ -4,3 +4,11 @@ dist-ssr
 *.local
 .env
 server/data/
+
+.DS_Store
+*.log
+.vscode/
+.idea/
+*.swp
+*.swo
+.eslintcache
