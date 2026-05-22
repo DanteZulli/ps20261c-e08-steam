@@ -21,12 +21,23 @@ app.get('/api/hello', (_req, res) => {
   res.json({ message: '¡Hola desde el backend! 🎮', juegos: juegos.total });
 });
 
-app.get('/api/juegos', (_req, res) => {
+app.get('/api/juegos', (req, res) => {
   const db = getDb();
 
-  const juegos = db.prepare(`
-    SELECT * FROM juegos
-  `).all();
+  const busqueda = req.query.q;
+
+  let juegos;
+
+  if (busqueda) {
+    juegos = db.prepare(`
+      SELECT * FROM juegos
+      WHERE titulo LIKE ?
+    `).all(`%${busqueda}%`);
+  } else {
+    juegos = db.prepare(`
+      SELECT * FROM juegos
+    `).all();
+  }
 
   res.json(juegos);
 });

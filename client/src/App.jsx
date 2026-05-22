@@ -3,9 +3,11 @@ import { useEffect, useState } from 'react'
 function App() {
   const [juegos, setJuegos] = useState([])
   const [loading, setLoading] = useState(true)
+  const [busqueda, setBusqueda] = useState('')
+  const obtenerJuegos = (textoBusqueda = '') => {
+  setLoading(true)
 
-  useEffect(() => {
-    fetch('/api/juegos')
+  fetch(`/api/juegos?q=${textoBusqueda}`)
       .then((res) => res.json())
       .then((data) => {
         setJuegos(data)
@@ -15,6 +17,10 @@ function App() {
         console.error(error)
         setLoading(false)
       })
+  }
+
+  useEffect(() => {
+    obtenerJuegos()
   }, [])
 
   return (
@@ -28,7 +34,23 @@ function App() {
       }}
     >
       <h1 style={{ marginBottom: '2rem' }}>🎮 Steam Lite</h1>
-
+      <input
+        type="text"
+        placeholder="Buscar juego..."
+        value={busqueda}
+        onChange={(e) => {
+          setBusqueda(e.target.value)
+          obtenerJuegos(e.target.value)
+        }}
+        style={{
+          padding: '0.8rem',
+          width: '300px',
+          marginBottom: '2rem',
+          borderRadius: '8px',
+          border: 'none',
+          fontSize: '1rem',
+        }}
+      />
       {loading ? (
         <p>Cargando juegos...</p>
       ) : (
