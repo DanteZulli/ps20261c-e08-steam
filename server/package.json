@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
 "dev": "node --watch index.js",
-"reset": "RESET_DB=true node index.js",
+"reset": "node reset.js",
 "start": "node index.js"
   },
   "keywords": [],
