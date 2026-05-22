@@ -10,11 +10,13 @@
 | **Docente a cargo** | Ing. Damián Santos |
 | **Docente** | Ing. Maximiliano Santos |
 | **Director** | Esp. Lic. Gustavo Siciliano |
+| **Prof. Adjunto** | Nazareno Galvan |
+| **JTP** | Darío Casais |
 
 ### Integrantes
 
 - Dante Zulli
-- Tomas Pugente
+- Tomás Pugente
 - Angel Altieri
 - Micaela Insfran
 - Marcos Tambosco
