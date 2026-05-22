@@ -1,6 +1,6 @@
 # Steam Lite
 
-> Proyecto de Software — 2025
+> Proyecto de Software — 2026
 
 ## Cátedra
 
@@ -16,7 +16,7 @@
 - Dante Zulli
 - Gianluca Pugente
 - Santino Altieri
-- Axel Joel Insfran
+- Micaela Insfran
 - Agustín Tambosco
 
 ## Stack
