@@ -24,20 +24,22 @@ app.get('/api/hello', (_req, res) => {
 app.get('/api/juegos', (req, res) => {
   const db = getDb();
 
-  const busqueda = req.query.q;
+  const busqueda = req.query.q || '';
+  const genero = req.query.genero || '';
 
-  let juegos;
+  let query = `
+    SELECT * FROM juegos
+    WHERE titulo LIKE ?
+  `;
 
-  if (busqueda) {
-    juegos = db.prepare(`
-      SELECT * FROM juegos
-      WHERE titulo LIKE ?
-    `).all(`%${busqueda}%`);
-  } else {
-    juegos = db.prepare(`
-      SELECT * FROM juegos
-    `).all();
+  const params = [`%${busqueda}%`];
+
+  if (genero) {
+    query += ` AND genero = ?`;
+    params.push(genero);
   }
+
+  const juegos = db.prepare(query).all(...params);
 
   res.json(juegos);
 });
