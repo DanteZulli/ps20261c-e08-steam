@@ -77,13 +77,18 @@ function initDb() {
 }
 
 function resetDb() {
-  if (db) db.close();
-  const fs = require('fs');
-  if (fs.existsSync(DB_PATH)) {
-    fs.unlinkSync(DB_PATH);
-    console.log('Base de datos eliminada.');
-  }
-  db = null;
+  const database = getDb();
+
+  database.exec(`
+    DELETE FROM biblioteca;
+    DELETE FROM resenas;
+    DELETE FROM ofertas;
+    DELETE FROM juegos;
+    DELETE FROM usuarios;
+    DELETE FROM sqlite_sequence;
+  `);
+
+  console.log('Base de datos vaciada.');
 }
 
 module.exports = { getDb, initDb, resetDb };

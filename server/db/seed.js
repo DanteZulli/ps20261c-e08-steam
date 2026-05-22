@@ -26,9 +26,9 @@ function seed() {
   );
 
   const transaction = db.transaction(() => {
-    insertUsuario.run('dante', 'dante@test.com', '123456', null);
-    insertUsuario.run('alice', 'alice@test.com', '123456', null);
-    insertUsuario.run('bob', 'bob@test.com', '123456', null);
+    insertUsuario.run('dante', 'dante@test.com', '123456', '/images/avatarhombre.png');
+    insertUsuario.run('alice', 'alice@test.com', '123456', '/images/avatarmujer.png');
+    insertUsuario.run('bob', 'bob@test.com', '123456', '/images/avatarhombre.png');
 
     const juegos = [
       ['Dark Souls III', 'RPG de acción en un mundo oscuro', 59.99, '/images/darksoul3.jpg', 'RPG', '2016-03-24'],
