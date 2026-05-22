@@ -15,6 +15,34 @@ seed();
 app.use(cors());
 app.use(express.json());
 
+app.post('/api/login', (req, res) => {
+  const db = getDb();
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email y contraseña son requeridos.' });
+  }
+
+  const usuario = db
+    .prepare(
+      `
+        SELECT username, email
+        FROM usuarios
+        WHERE email = ? AND password = ?
+      `
+    )
+    .get(email, password);
+
+  if (!usuario) {
+    return res.status(401).json({ message: 'Credenciales inválidas.' });
+  }
+
+  return res.json({
+    user_name: usuario.username,
+    email: usuario.email,
+  });
+});
+
 app.get('/api/hello', (_req, res) => {
   const db = getDb();
   const juegos = db.prepare('SELECT COUNT(*) as total FROM juegos').get();

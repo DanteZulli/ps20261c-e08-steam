@@ -14,10 +14,10 @@
 ### Integrantes
 
 - Dante Zulli
-- Gianluca Pugente
-- Santino Altieri
+- Tomas Pugente
+- Angel Altieri
 - Micaela Insfran
-- Agustín Tambosco
+- Marcos Tambosco
 
 ## Stack
 

@@ -26,18 +26,18 @@ function seed() {
   );
 
   const transaction = db.transaction(() => {
-    insertUsuario.run('dante', 'dante@test.com', '123456', null);
-    insertUsuario.run('alice', 'alice@test.com', '123456', null);
-    insertUsuario.run('bob', 'bob@test.com', '123456', null);
+    insertUsuario.run('dante', 'dante@test.com', '123456', '/images/avatarhombre.png');
+    insertUsuario.run('alice', 'alice@test.com', '123456', '/images/avatarmujer.png');
+    insertUsuario.run('bob', 'bob@test.com', '123456', '/images/avatarhombre.png');
 
     const juegos = [
-      ['Dark Souls III', 'RPG de acción en un mundo oscuro', 59.99, null, 'RPG', '2016-03-24'],
-      ['Hollow Knight', 'Metroidvania de insectos en un reino caído', 14.99, null, 'Metroidvania', '2017-02-24'],
-      ['Stardew Valley', 'Granja, amistades y aventuras', 9.99, null, 'Simulación', '2016-02-26'],
-      ['Celeste', 'Plataformero sobre una montaña y uno mismo', 19.99, null, 'Plataformas', '2018-01-25'],
-      ['Portal 2', 'Puzzles cooperativos con portales', 9.99, null, 'Puzzle', '2011-04-18'],
-      ['Elden Ring', 'Mundo abierto de fantasía oscura', 59.99, null, 'RPG', '2022-02-25'],
-      ['Hades', 'Roguelike mitológico', 24.99, null, 'Roguelike', '2020-09-17'],
+      ['Dark Souls III', 'RPG de acción en un mundo oscuro', 59.99, '/images/darksoul3.jpg', 'RPG', '2016-03-24'],
+      ['Hollow Knight', 'Metroidvania de insectos en un reino caído', 14.99, '/images/hollowknight.webp', 'Metroidvania', '2017-02-24'],
+      ['Stardew Valley', 'Granja, amistades y aventuras', 9.99, '/images/stardewwalley.jpg', 'Simulación', '2016-02-26'],
+      ['Celeste', 'Plataformero sobre una montaña y uno mismo', 19.99, '/images/celeste.webp', 'Plataformas', '2018-01-25'],
+      ['Portal 2', 'Puzzles cooperativos con portales', 9.99, '/images/portal2.webp', 'Puzzle', '2011-04-18'],
+      ['Elden Ring', 'Mundo abierto de fantasía oscura', 59.99, '/images/eldenring.webp', 'RPG', '2022-02-25'],
+      ['Hades', 'Roguelike mitológico', 24.99, '/images/hades.webp', 'Roguelike', '2020-09-17'],
     ];
 
     for (const j of juegos) {
