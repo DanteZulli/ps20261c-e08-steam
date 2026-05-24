@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-function Games({ onGoToLogin }) {
+function Games({ onGoToLogin, onNavigate }) {
   const [juegos, setJuegos] = useState([])
   const [loading, setLoading] = useState(true)
   const [busqueda, setBusqueda] = useState('')
@@ -252,7 +252,9 @@ function Games({ onGoToLogin }) {
           {juegos.map((juego) => (
             <div
               key={juego.id}
+              onClick={() => onNavigate(`/juegos/${juego.id}`)}
               style={{
+                cursor: 'pointer',
                 backgroundColor: '#2a475e',
                 padding: '1rem',
                 borderRadius: '10px',

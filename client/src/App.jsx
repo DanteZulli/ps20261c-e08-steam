@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Login from './Login.jsx'
 import Register from './Register.jsx'
 import Games from './Games.jsx'
+import GameDetail from './GameDetail.jsx'
 
 function HomePage({ onGoToLogin, onGoToRegister }) {
   return (
@@ -83,8 +84,13 @@ function App() {
     return <Register onSuccess={handleLoginSuccess} onBack={() => navigate('/')} onGoToLogin={() => navigate('/login')} />
   }
 
+  if(pathname.startsWith('/juegos/')){
+    const id= pathname.split('/')[2]
+    return <GameDetail id={id} onBack={() => navigate('/juegos')} />
+  }
+
   if (pathname === '/juegos') {
-    return <Games onGoToLogin={() => navigate('/login')} />
+    return <Games onGoToLogin={() => navigate('/login')} onNavigate={navigate} />
   }
 
   return <HomePage onGoToLogin={() => navigate('/login')} onGoToRegister={() => navigate('/register')} />

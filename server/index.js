@@ -91,6 +91,20 @@ app.get('/api/juegos', (req, res) => {
   res.json(juegos);
 });
 
+app.get('/api/juegos/:id', (req,res)  =>{
+  const db=getDb();
+  const id= req.params.id;
+
+    const juego = db.prepare(
+      `SELECT * FROM juegos WHERE id = ?`
+    ).get(id) 
+
+     if (!juego) {
+    return res.status(404).json({ message: 'No se encontro un juego con los parametros recibidos' });
+  }
+    res.json(juego);
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
