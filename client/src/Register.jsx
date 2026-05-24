@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-function Login({ onSuccess, onBack, onGoToRegister }) {
+function Register({ onSuccess, onBack, onGoToLogin }) {
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -12,24 +13,19 @@ function Login({ onSuccess, onBack, onGoToRegister }) {
     setLoading(true)
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('/api/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'No se pudo iniciar sesión.')
+        throw new Error(data.message || 'No se pudo registrar.')
       }
 
-      onSuccess({
-        user_name: data.user_name,
-        email: data.email,
-      })
+      onSuccess({ user_name: username, email })
     } catch (submitError) {
       setError(submitError.message)
     } finally {
@@ -77,12 +73,32 @@ function Login({ onSuccess, onBack, onGoToRegister }) {
           ← Volver
         </button>
 
-        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Iniciar sesión</h1>
+        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Crear cuenta</h1>
         <p style={{ color: '#c6d4df', marginBottom: '1.5rem', lineHeight: 1.5 }}>
-          Accede con tu email y contraseña para guardar tu usuario en el navegador.
+          Registrate para acceder al catálogo de juegos.
         </p>
 
         <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
+          <label style={{ display: 'grid', gap: '0.5rem' }}>
+            <span style={{ fontWeight: 600 }}>Nombre de usuario</span>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Tu nombre de usuario"
+              required
+              style={{
+                width: '100%',
+                padding: '0.9rem 1rem',
+                borderRadius: '10px',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                backgroundColor: '#0f1720',
+                color: '#fff',
+                fontSize: '1rem',
+              }}
+            />
+          </label>
+
           <label style={{ display: 'grid', gap: '0.5rem' }}>
             <span style={{ fontWeight: 600 }}>Email</span>
             <input
@@ -111,7 +127,7 @@ function Login({ onSuccess, onBack, onGoToRegister }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Tu contraseña"
-              autoComplete="current-password"
+              autoComplete="new-password"
               required
               style={{
                 width: '100%',
@@ -154,15 +170,15 @@ function Login({ onSuccess, onBack, onGoToRegister }) {
               opacity: loading ? 0.8 : 1,
             }}
           >
-            {loading ? 'Ingresando...' : 'Entrar'}
+            {loading ? 'Creando cuenta...' : 'Registrarse'}
           </button>
         </form>
 
         <p style={{ marginTop: '1.5rem', textAlign: 'center', color: '#9fc9e4' }}>
-          ¿No tenés cuenta?{' '}
+          ¿Ya tenés cuenta?{' '}
           <button
             type="button"
-            onClick={onGoToRegister}
+            onClick={onGoToLogin}
             style={{
               background: 'transparent',
               border: 'none',
@@ -174,7 +190,7 @@ function Login({ onSuccess, onBack, onGoToRegister }) {
               textDecoration: 'underline',
             }}
           >
-            Registrarse
+            Iniciar sesión
           </button>
         </p>
       </section>
@@ -182,4 +198,4 @@ function Login({ onSuccess, onBack, onGoToRegister }) {
   )
 }
 
-export default Login
+export default Register
