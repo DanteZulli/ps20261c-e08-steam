@@ -117,11 +117,22 @@ function GameDetail({ id, onBack }) {
                 ← Volver
             </button>
 
-            <h1>{juego.titulo}</h1>
-            <p style={{ color: '#67c1f5', fontWeight: 'bold' }}>{juego.genero}</p>
-            <p>{juego.descripcion}</p>
-            <p style={{ fontSize: '1.25rem', color: '#beee11' }}>${juego.precio}</p>
-            <p style={{ fontSize: '0.85rem', color: '#8f98a0' }}>Lanzamiento: {juego.fecha_lanzamiento}</p>
+            <div
+                style={{
+                    backgroundImage: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(' + juego.imagen_url + ')',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    padding: '3rem 2rem',
+                    borderRadius: '8px',
+                    marginBottom: '2rem',
+                }}
+            >
+                <h1 style={{ margin: 0 }}>{juego.titulo}</h1>
+                <p style={{ color: '#67c1f5', fontWeight: 'bold', marginTop: '0.5rem' }}>{juego.genero}</p>
+                <p>{juego.descripcion}</p>
+                <p style={{ fontSize: '1.25rem', color: '#beee11' }}>${juego.precio}</p>
+                <p style={{ fontSize: '0.85rem', color: '#8f98a0' }}>Lanzamiento: {juego.fecha_lanzamiento}</p>
+            </div>
 
             <hr style={{ border: '0', height: '1px', background: '#3a546e', margin: '2rem 0' }} />
 
