@@ -28,7 +28,7 @@ app.post('/api/login', (req, res) => {
 
   const usuario = db
     .prepare(
-      `SELECT username, email FROM usuarios WHERE email = ? AND password = ?`
+      `SELECT id, username, email FROM usuarios WHERE email = ? AND password = ?`
     )
     .get(email, hash(password));
 
@@ -37,6 +37,7 @@ app.post('/api/login', (req, res) => {
   }
 
   return res.json({
+    user_id: usuario.id,
     user_name: usuario.username,
     email: usuario.email,
   });
@@ -103,6 +104,68 @@ app.get('/api/juegos/:id', (req,res)  =>{
     return res.status(404).json({ message: 'No se encontro un juego con los parametros recibidos' });
   }
     res.json(juego);
+});
+
+// 1. Obtener todas las reseñas de un juego específico
+app.get('/api/juegos/:id/resenas', (req, res) => {
+  const db = getDb();
+  const juegoId = req.params.id;
+
+  try {
+    const resenas = db.prepare(`
+      SELECT r.*, u.username 
+      FROM resenas r
+      JOIN usuarios u ON r.usuario_id = u.id
+      WHERE r.juego_id = ?
+      ORDER BY r.created_at DESC
+    `).all(juegoId);
+
+    res.json(resenas);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener las reseñas.' });
+  }
+});
+
+app.post('/api/resenas', (req, res) => {
+  const db = getDb();
+  const { contenido, rating, juego_id, usuario_id } = req.body;
+
+  if (!contenido || !rating || !juego_id || !usuario_id) {
+    return res.status(400).json({ message: 'Faltan campos obligatorios.' });
+  }
+
+  if (rating < 1 || rating > 5) {
+    return res.status(400).json({ message: 'El rating debe ser entre 1 y 5.' });
+  }
+
+  try {
+    const info = db.prepare(`
+      INSERT INTO resenas (contenido, rating, juego_id, usuario_id)
+      VALUES (?, ?, ?, ?)
+    `).run(contenido, rating, juego_id, usuario_id);
+
+    res.status(201).json({ 
+      message: 'Reseña guardada con éxito.', 
+      resenaId: info.lastInsertRowid 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al guardar la reseña.' });
+  }
+});
+
+// RUTA TEMPORAL PARA LIMPIAR RESEÑAS DE PRUEBA
+app.get('/api/limpiar-resenas-test', (req, res) => {
+  const db = getDb();
+  try {
+    // Borramos solo las reseñas que tengan el contenido que estuviste probando
+    // o podés usar 'DELETE FROM resenas WHERE id > 2' para borrar las nuevas
+    const info = db.prepare("DELETE FROM resenas WHERE contenido = 'Unlujaso' OR id > 2").run();
+    res.send(`<h1>¡Se eliminaron ${info.changes} reseñas de prueba con éxito!</h1>`);
+  } catch (error) {
+    res.status(500).send('Error: ' + error.message);
+  }
 });
 
 app.listen(PORT, () => {

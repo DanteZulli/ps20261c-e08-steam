@@ -22,14 +22,17 @@ function Login({ onSuccess, onBack, onGoToRegister }) {
 
       const data = await response.json()
 
+      
       if (!response.ok) {
         throw new Error(data.message || 'No se pudo iniciar sesión.')
       }
 
       onSuccess({
+        user_id: data.user_id, // <-- Asegurate de que diga user_id
         user_name: data.user_name,
         email: data.email,
       })
+
     } catch (submitError) {
       setError(submitError.message)
     } finally {
