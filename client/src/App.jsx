@@ -3,6 +3,7 @@ import Login from './Login.jsx'
 import Register from './Register.jsx'
 import Games from './Games.jsx'
 import GameDetail from './GameDetail.jsx'
+import Cart from './cart.jsx'
 
 function HomePage({ onGoToLogin, onGoToRegister }) {
   return (
@@ -66,6 +67,48 @@ function App() {
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
+  const [carrito,setCarrito]=useState([])
+
+  const agregarAlCarrito= (juego) => {
+    const yaEsta=carrito.some((j)=> j.id === juego.id)
+    if (yaEsta){
+      return
+    }
+    setCarrito([...carrito,juego])
+  }
+
+  const handleComprar = async () => {
+  const usuarioLocal = JSON.parse(localStorage.getItem('steam-lite-user') || '{}')
+
+  if (!usuarioLocal.user_id) {
+    return alert('Debes iniciar sesión para comprar.')
+  }
+
+  const juegos_ids = carrito.map((j) => j.id)
+
+  try {
+    const response = await fetch('/api/biblioteca', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        usuario_id: usuarioLocal.user_id,
+        juegos_ids,
+      }),
+    })
+
+    if (response.ok) {
+      alert('¡Compra realizada con éxito!')
+      setCarrito([])
+      navigate('/juegos')
+    } else {
+      alert('Error al procesar la compra.')
+    }
+  } catch (error) {
+    console.error(error)
+    alert('Error de conexión con el servidor.')
+  }
+}
+
   const navigate = (nextPath) => {
     window.history.pushState({}, '', nextPath)
     setPathname(nextPath)
@@ -86,7 +129,11 @@ function App() {
 
   if(pathname.startsWith('/juegos/')){
     const id= pathname.split('/')[2]
-    return <GameDetail id={id} onBack={() => navigate('/juegos')} />
+    return <GameDetail id={id} onBack={() => navigate('/juegos')} onAgregarAlCarrito={agregarAlCarrito} />
+  }
+
+  if(pathname === '/carrito'){
+    return <Cart carrito={carrito} onBack={() =>navigate('/juegos')} onComprar={handleComprar} />
   }
 
   if (pathname === '/juegos') {

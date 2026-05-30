@@ -127,6 +127,20 @@ function Games({ onGoToLogin, onNavigate }) {
           >
             Usuario
           </button>
+          <button
+  onClick={() => onNavigate('/carrito')}
+  style={{
+    padding: '0.8rem 1rem',
+    borderRadius: '10px',
+    border: 'none',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    backgroundColor: '#2a475e',
+    color: 'white',
+  }}
+>
+  🛒 Carrito
+</button>
 
           {mostrarMenuUsuario && (
             <div

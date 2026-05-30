@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-function GameDetail({ id, onBack }) {
+function GameDetail({ id, onBack, onAgregarAlCarrito }) {
     const [juego, setJuego] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
@@ -131,6 +131,22 @@ function GameDetail({ id, onBack }) {
                 <p style={{ color: '#67c1f5', fontWeight: 'bold', marginTop: '0.5rem' }}>{juego.genero}</p>
                 <p>{juego.descripcion}</p>
                 <p style={{ fontSize: '1.25rem', color: '#beee11' }}>${juego.precio}</p>
+                <button
+                onClick={() => onAgregarAlCarrito(juego)}
+                style={{
+                    marginTop: '1rem',
+                    padding: '0.8rem 1.5rem',
+                    borderRadius: '10px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontSize: '1rem',
+                    backgroundColor: '#66c0f4',
+                    color: '#0f1720',
+                }}
+                >
+                🛒 Agregar al carrito
+                </button>
                 <p style={{ fontSize: '0.85rem', color: '#8f98a0' }}>Lanzamiento: {juego.fecha_lanzamiento}</p>
             </div>
 
