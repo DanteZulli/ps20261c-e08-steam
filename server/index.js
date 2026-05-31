@@ -92,6 +92,30 @@ app.get('/api/juegos', (req, res) => {
   res.json(juegos);
 });
 
+app.post('/api/biblioteca', (req, res) => {
+  const db = getDb()
+  const { usuario_id, juegos_ids } = req.body
+
+  if (!usuario_id || !juegos_ids || juegos_ids.length === 0) {
+    return res.status(400).json({ message: 'Faltan datos para procesar la compra.' })
+  }
+
+  const insertar = db.prepare(`
+    INSERT OR IGNORE INTO biblioteca (usuario_id, juego_id)
+    VALUES (?, ?)
+  `)
+
+  const transaction = db.transaction(() => {
+    for (const juego_id of juegos_ids) {
+      insertar.run(usuario_id, juego_id)
+    }
+  })
+
+  transaction()
+
+  res.status(201).json({ message: 'Compra realizada con éxito.' })
+})
+
 app.get('/api/juegos/:id', (req,res)  =>{
   const db=getDb();
   const id= req.params.id;
@@ -167,6 +191,7 @@ app.get('/api/limpiar-resenas-test', (req, res) => {
     res.status(500).send('Error: ' + error.message);
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
