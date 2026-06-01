@@ -78,6 +78,10 @@ function App() {
     setCarrito([...carrito,juego])
   }
 
+  const eliminarDelCarrito = (id) => {
+  setCarrito(carrito.filter((j) => j.id !== id))
+  }
+
  
   const navigate = (nextPath) => {
     window.history.pushState({}, '', nextPath)
@@ -136,7 +140,7 @@ function App() {
   }
 
   if(pathname === '/carrito'){
-    return <Cart carrito={carrito} onBack={() =>navigate('/juegos')} onComprar={handleComprar} />
+    return <Cart carrito={carrito} onBack={() =>navigate('/juegos')} onComprar={handleComprar} onEliminar={eliminarDelCarrito} />
   }
 
   if(pathname === '/biblioteca'){

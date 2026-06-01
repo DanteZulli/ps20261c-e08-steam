@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Cart({carrito, onBack, onComprar}){
+function Cart({carrito, onBack, onComprar, onEliminar}){
     const total = carrito.reduce((acum, juego) => acum + juego.precio, 0)
 
     return (
@@ -47,7 +47,25 @@ function Cart({carrito, onBack, onComprar}){
             }}
           >
             <span>{juego.titulo}</span>
-            <span style={{ color: '#beee11' }}>${juego.precio}</span>
+            <span style={{ color: '#beee11' }}>${juego.precio}</span> 
+            <div key={juego.id} style={{ backgroundColor: '#2a475e', padding: '1rem', borderRadius: '10px', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>{juego.titulo}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <span style={{ color: '#beee11' }}>${juego.precio}</span>
+              <button
+              onClick={() => onEliminar(juego.id)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#ff8a8a',
+                cursor: 'pointer',
+                fontSize: '1.1rem',
+              }}
+    >
+      Eliminar
+    </button>
+  </div>
+</div>
           </div>
         ))}
 
