@@ -4,6 +4,7 @@ import Register from './Register.jsx'
 import Games from './Games.jsx'
 import GameDetail from './GameDetail.jsx'
 import Cart from './cart.jsx'
+import Library from './Library.jsx'
 
 function HomePage({ onGoToLogin, onGoToRegister }) {
   return (
@@ -77,7 +78,13 @@ function App() {
     setCarrito([...carrito,juego])
   }
 
-  const handleComprar = async () => {
+ 
+  const navigate = (nextPath) => {
+    window.history.pushState({}, '', nextPath)
+    setPathname(nextPath)
+  }
+
+   const handleComprar = async () => {
   const usuarioLocal = JSON.parse(localStorage.getItem('steam-lite-user') || '{}')
 
   if (!usuarioLocal.user_id) {
@@ -109,10 +116,6 @@ function App() {
   }
 }
 
-  const navigate = (nextPath) => {
-    window.history.pushState({}, '', nextPath)
-    setPathname(nextPath)
-  }
 
   const handleLoginSuccess = (usuario) => {
     localStorage.setItem('steam-lite-user', JSON.stringify(usuario))
@@ -134,6 +137,10 @@ function App() {
 
   if(pathname === '/carrito'){
     return <Cart carrito={carrito} onBack={() =>navigate('/juegos')} onComprar={handleComprar} />
+  }
+
+  if(pathname === '/biblioteca'){
+    return <Library onBack={() => navigate('/juegos')}/>
   }
 
   if (pathname === '/juegos') {

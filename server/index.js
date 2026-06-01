@@ -192,6 +192,22 @@ app.get('/api/limpiar-resenas-test', (req, res) => {
   }
 });
 
+app.get('/api/biblioteca/:id', (req,res) =>{
+  const db= getDb();
+  const id= req.params.id;
+  const biblioteca= db.prepare(`SELECT j.id, j.titulo, j.descripcion, j.precio, b.fecha_adquisicion
+  FROM biblioteca b
+  INNER JOIN juegos j
+  ON b.juego_id = j.id
+  WHERE b.usuario_id = ?;`).all(id);
+
+  if(!biblioteca){
+    res.status(401).json({message:"No se encontro una biblioteca de este usuario"})
+  }
+
+  res.json(biblioteca);
+})
+
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
