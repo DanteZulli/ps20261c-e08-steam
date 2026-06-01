@@ -141,6 +141,20 @@ function Games({ onGoToLogin, onNavigate }) {
 >
   🛒 Carrito
 </button>
+<button
+  onClick={() => onNavigate('/biblioteca')}
+  style={{
+    padding: '0.8rem 1rem',
+    borderRadius: '10px',
+    border: 'none',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    backgroundColor: '#2a475e',
+    color: 'white',
+  }}
+>
+  📚 Biblioteca
+</button> 
 
           {mostrarMenuUsuario && (
             <div
