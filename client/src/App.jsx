@@ -3,7 +3,7 @@ import Login from './Login.jsx'
 import Register from './Register.jsx'
 import Games from './Games.jsx'
 import GameDetail from './GameDetail.jsx'
-import Cart from './cart.jsx'
+import Cart from './Cart.jsx'
 import Library from './Library.jsx'
 
 function HomePage({ onGoToLogin, onGoToRegister }) {
