@@ -76,16 +76,27 @@ app.get('/api/juegos', (req, res) => {
   const genero = req.query.genero || '';
 
   let query = `
-    SELECT * FROM juegos
-    WHERE titulo LIKE ?
+    SELECT j.*,
+      o.id as oferta_id,
+      o.descuento,
+      o.fecha_inicio as oferta_inicio,
+      o.fecha_fin as oferta_fin,
+      ROUND(j.precio * (100.0 - o.descuento) / 100.0, 2) as precio_oferta
+    FROM juegos j
+    LEFT JOIN ofertas o ON j.id = o.juego_id AND o.activa = 1
+      AND date('now') >= o.fecha_inicio
+      AND date('now') <= o.fecha_fin
+    WHERE j.titulo LIKE ?
   `;
 
   const params = [`%${busqueda}%`];
 
   if (genero) {
-    query += ` AND genero = ?`;
+    query += ` AND j.genero = ?`;
     params.push(genero);
   }
+
+  query += ` ORDER BY j.titulo ASC`;
 
   const juegos = db.prepare(query).all(...params);
 
@@ -120,9 +131,19 @@ app.get('/api/juegos/:id', (req,res)  =>{
   const db=getDb();
   const id= req.params.id;
 
-    const juego = db.prepare(
-      `SELECT * FROM juegos WHERE id = ?`
-    ).get(id) 
+    const juego = db.prepare(`
+      SELECT j.*,
+        o.id as oferta_id,
+        o.descuento,
+        o.fecha_inicio as oferta_inicio,
+        o.fecha_fin as oferta_fin,
+        ROUND(j.precio * (100.0 - o.descuento) / 100.0, 2) as precio_oferta
+      FROM juegos j
+      LEFT JOIN ofertas o ON j.id = o.juego_id AND o.activa = 1
+        AND date('now') >= o.fecha_inicio
+        AND date('now') <= o.fecha_fin
+      WHERE j.id = ?
+    `).get(id) 
 
      if (!juego) {
     return res.status(404).json({ message: 'No se encontro un juego con los parametros recibidos' });
@@ -208,6 +229,127 @@ app.get('/api/biblioteca/:id', (req,res) =>{
   res.json(biblioteca);
 })
 
+
+// ─── Ofertas API ─────────────────────────────────────────────
+
+function checkExpiredOffers() {
+  const db = getDb();
+  const { changes } = db.prepare(`
+    UPDATE ofertas SET activa = 0
+    WHERE activa = 1 AND date('now') > fecha_fin
+  `).run();
+  if (changes > 0) {
+    console.log(`[Ofertas] ${changes} oferta(s) expirada(s) desactivada(s).`);
+  }
+}
+
+// Ejecutar cada minuto
+setInterval(checkExpiredOffers, 60_000);
+// También al iniciar
+checkExpiredOffers();
+
+// Listar todas las ofertas con info del juego
+app.get('/api/ofertas', (req, res) => {
+  const db = getDb();
+  const ofertas = db.prepare(`
+    SELECT o.*, j.titulo as juego_titulo, j.precio as juego_precio,
+      ROUND(j.precio * (100.0 - o.descuento) / 100.0, 2) as precio_oferta
+    FROM ofertas o
+    JOIN juegos j ON j.id = o.juego_id
+    ORDER BY o.activa DESC, o.fecha_fin ASC
+  `).all();
+  res.json(ofertas);
+});
+
+// Crear una oferta
+app.post('/api/ofertas', (req, res) => {
+  const db = getDb();
+  const { juego_id, descuento, fecha_inicio, fecha_fin } = req.body;
+
+  if (!juego_id || descuento == null || !fecha_inicio || !fecha_fin) {
+    return res.status(400).json({ message: 'Todos los campos son requeridos.' });
+  }
+
+  const d = Number(descuento);
+  if (d < 0 || d > 100) {
+    return res.status(400).json({ message: 'El descuento debe estar entre 0 y 100.' });
+  }
+
+  if (fecha_fin < fecha_inicio) {
+    return res.status(400).json({ message: 'La fecha de fin no puede ser anterior a la fecha de inicio.' });
+  }
+
+  const juego = db.prepare('SELECT id FROM juegos WHERE id = ?').get(juego_id);
+  if (!juego) {
+    return res.status(404).json({ message: 'El juego no existe.' });
+  }
+
+  const info = db.prepare(`
+    INSERT INTO ofertas (descuento, fecha_inicio, fecha_fin, juego_id, activa)
+    VALUES (?, ?, ?, ?, 1)
+  `).run(d, fecha_inicio, fecha_fin, juego_id);
+
+  res.status(201).json({
+    message: 'Oferta creada correctamente.',
+    ofertaId: info.lastInsertRowid,
+  });
+});
+
+// Eliminar una oferta
+app.delete('/api/ofertas/:id', (req, res) => {
+  const db = getDb();
+  const { id } = req.params;
+
+  const oferta = db.prepare('SELECT id FROM ofertas WHERE id = ?').get(id);
+  if (!oferta) {
+    return res.status(404).json({ message: 'Oferta no encontrada.' });
+  }
+
+  db.prepare('DELETE FROM ofertas WHERE id = ?').run(id);
+  res.json({ message: 'Oferta eliminada.' });
+});
+
+// Crear ofertas masivas por etiqueta (género)
+app.post('/api/ofertas/bulk', (req, res) => {
+  const db = getDb();
+  const { genero, descuento, fecha_inicio, fecha_fin } = req.body;
+
+  if (!genero || descuento == null || !fecha_inicio || !fecha_fin) {
+    return res.status(400).json({ message: 'Todos los campos son requeridos.' });
+  }
+
+  const d = Number(descuento);
+  if (d < 0 || d > 100) {
+    return res.status(400).json({ message: 'El descuento debe estar entre 0 y 100.' });
+  }
+
+  if (fecha_fin < fecha_inicio) {
+    return res.status(400).json({ message: 'La fecha de fin no puede ser anterior a la fecha de inicio.' });
+  }
+
+  const juegos = db.prepare('SELECT id FROM juegos WHERE genero = ?').all(genero);
+  if (juegos.length === 0) {
+    return res.status(404).json({ message: `No se encontraron juegos con el género "${genero}".` });
+  }
+
+  const insertar = db.prepare(`
+    INSERT OR IGNORE INTO ofertas (descuento, fecha_inicio, fecha_fin, juego_id, activa)
+    VALUES (?, ?, ?, ?, 1)
+  `);
+
+  const transaction = db.transaction(() => {
+    for (const juego of juegos) {
+      insertar.run(d, fecha_inicio, fecha_fin, juego.id);
+    }
+  });
+
+  transaction();
+
+  res.status(201).json({
+    message: `Ofertas creadas para ${juegos.length} juego(s) del género "${genero}".`,
+    cantidad: juegos.length,
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

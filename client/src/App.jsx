@@ -5,6 +5,7 @@ import Games from './Games.jsx'
 import GameDetail from './GameDetail.jsx'
 import Cart from './Cart.jsx'
 import Library from './Library.jsx'
+import OfertasPanel from './OfertasPanel.jsx'
 
 function HomePage({ onGoToLogin, onGoToRegister }) {
   return (
@@ -132,7 +133,13 @@ function App() {
 
   if(pathname.startsWith('/juegos/')){
     const id= pathname.split('/')[2]
-    return <GameDetail id={id} onBack={() => navigate('/juegos')} onAgregarAlCarrito={agregarAlCarrito} />
+    return <GameDetail id={id} onBack={() => navigate('/juegos')} onAgregarAlCarrito={agregarAlCarrito} onNavigate={navigate} />
+  }
+
+  if (pathname === '/ofertas') {
+    const params = new URLSearchParams(window.location.search)
+    const juegoId = params.get('juegoId')
+    return <OfertasPanel onBack={() => navigate('/juegos')} juegoInicial={juegoId} />
   }
 
   if(pathname === '/carrito'){

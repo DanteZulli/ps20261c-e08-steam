@@ -67,6 +67,8 @@ function seed() {
     const hoy = new Date();
     const dentroDeUnMes = new Date();
     dentroDeUnMes.setMonth(hoy.getMonth() + 1);
+    const dentroDe3Dias = new Date();
+    dentroDe3Dias.setDate(hoy.getDate() + 3);
     const mesPasado = new Date();
     mesPasado.setMonth(hoy.getMonth() - 1);
     const haceDosMeses = new Date();
@@ -78,6 +80,9 @@ function seed() {
     insertOferta.run(75, fmt(hoy), fmt(dentroDeUnMes), 3, 1);
     insertOferta.run(40, fmt(hoy), fmt(dentroDeUnMes), 5, 1);
     insertOferta.run(30, fmt(hoy), fmt(dentroDeUnMes), 7, 1);
+    insertOferta.run(20, fmt(hoy), fmt(dentroDe3Dias), 1, 1);
+    insertOferta.run(25, fmt(hoy), fmt(dentroDeUnMes), 6, 1);
+    insertOferta.run(10, fmt(hoy), fmt(dentroDeUnMes), 4, 1);
   });
 
   transaction();
