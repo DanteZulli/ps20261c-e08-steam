@@ -82,7 +82,7 @@ function App() {
  
   const navigate = (nextPath) => {
     window.history.pushState({}, '', nextPath)
-    setPathname(nextPath)
+    setPathname(nextPath.split('?')[0])
   }
 
    const handleComprar = async () => {

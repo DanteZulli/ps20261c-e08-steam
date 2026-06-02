@@ -280,63 +280,45 @@ function Games({ onGoToLogin, onNavigate }) {
           {juegos.map((juego) => (
             <div
               key={juego.id}
+              onClick={() => onNavigate(`/juegos/${juego.id}`)}
               style={{
+                cursor: 'pointer',
                 backgroundColor: '#2a475e',
                 padding: '1rem',
                 borderRadius: '10px',
                 backgroundImage: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(' + juego.imagen_url + ')',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                display: 'flex',
-                flexDirection: 'column',
               }}
             >
-              <div style={{ flex: 1, cursor: 'pointer' }} onClick={() => onNavigate(`/juegos/${juego.id}`)}>
-                <h2>{juego.titulo}</h2>
-                <p>{juego.genero}</p>
-                <p>{juego.descripcion}</p>
-                <div style={{ marginTop: '0.5rem' }}>
-                  {juego.precio_oferta ? (
-                    <>
-                      <span style={{ textDecoration: 'line-through', color: '#8f98a0', marginRight: '0.5rem' }}>
-                        ${juego.precio}
-                      </span>
-                      <span style={{ color: '#beee11', fontWeight: 'bold', fontSize: '1.1rem' }}>
-                        ${juego.precio_oferta}
-                      </span>
-                      <span style={{
-                        marginLeft: '0.5rem',
-                        padding: '0.15rem 0.4rem',
-                        borderRadius: '4px',
-                        backgroundColor: '#beee11',
-                        color: '#0f1720',
-                        fontSize: '0.75rem',
-                        fontWeight: 'bold',
-                      }}>
-                        -{juego.descuento}%
-                      </span>
-                    </>
-                  ) : (
-                    <span style={{ color: '#beee11', fontWeight: 'bold' }}>${juego.precio}</span>
-                  )}
-                </div>
+              <h2>{juego.titulo}</h2>
+              <p>{juego.genero}</p>
+              <p>{juego.descripcion}</p>
+              <div style={{ marginTop: '0.5rem' }}>
+                {juego.precio_oferta ? (
+                  <>
+                    <span style={{ textDecoration: 'line-through', color: '#8f98a0', marginRight: '0.5rem' }}>
+                      ${juego.precio}
+                    </span>
+                    <span style={{ color: '#beee11', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                      ${juego.precio_oferta}
+                    </span>
+                    <span style={{
+                      marginLeft: '0.5rem',
+                      padding: '0.15rem 0.4rem',
+                      borderRadius: '4px',
+                      backgroundColor: '#beee11',
+                      color: '#0f1720',
+                      fontSize: '0.75rem',
+                      fontWeight: 'bold',
+                    }}>
+                      -{juego.descuento}%
+                    </span>
+                  </>
+                ) : (
+                  <span style={{ color: '#beee11', fontWeight: 'bold' }}>${juego.precio}</span>
+                )}
               </div>
-              <button
-                onClick={(e) => { e.stopPropagation(); onNavigate(`/ofertas?juegoId=${juego.id}`) }}
-                style={{
-                  marginTop: '0.5rem',
-                  padding: '0.5rem',
-                  borderRadius: '6px',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.85rem',
-                  backgroundColor: '#beee11',
-                  color: '#0f1720',
-                }}
-              >
-                Oferta
-              </button>
             </div>
           ))}
         </div>
