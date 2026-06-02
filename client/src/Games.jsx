@@ -293,8 +293,32 @@ function Games({ onGoToLogin, onNavigate }) {
             >
               <h2>{juego.titulo}</h2>
               <p>{juego.genero}</p>
-              <p>${juego.precio}</p>
               <p>{juego.descripcion}</p>
+              <div style={{ marginTop: '0.5rem' }}>
+                {juego.precio_oferta ? (
+                  <>
+                    <span style={{ textDecoration: 'line-through', color: '#8f98a0', marginRight: '0.5rem' }}>
+                      ${juego.precio}
+                    </span>
+                    <span style={{ color: '#beee11', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                      ${juego.precio_oferta}
+                    </span>
+                    <span style={{
+                      marginLeft: '0.5rem',
+                      padding: '0.15rem 0.4rem',
+                      borderRadius: '4px',
+                      backgroundColor: '#beee11',
+                      color: '#0f1720',
+                      fontSize: '0.75rem',
+                      fontWeight: 'bold',
+                    }}>
+                      -{juego.descuento}%
+                    </span>
+                  </>
+                ) : (
+                  <span style={{ color: '#beee11', fontWeight: 'bold' }}>${juego.precio}</span>
+                )}
+              </div>
             </div>
           ))}
         </div>

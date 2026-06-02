@@ -67,17 +67,10 @@ function seed() {
     const hoy = new Date();
     const dentroDeUnMes = new Date();
     dentroDeUnMes.setMonth(hoy.getMonth() + 1);
-    const mesPasado = new Date();
-    mesPasado.setMonth(hoy.getMonth() - 1);
-    const haceDosMeses = new Date();
-    haceDosMeses.setMonth(hoy.getMonth() - 2);
 
     const fmt = (d) => d.toISOString().split('T')[0];
 
-    insertOferta.run(50, fmt(mesPasado), fmt(haceDosMeses), 2, 0);
-    insertOferta.run(75, fmt(hoy), fmt(dentroDeUnMes), 3, 1);
     insertOferta.run(40, fmt(hoy), fmt(dentroDeUnMes), 5, 1);
-    insertOferta.run(30, fmt(hoy), fmt(dentroDeUnMes), 7, 1);
   });
 
   transaction();

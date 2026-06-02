@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-function GameDetail({ id, onBack, onAgregarAlCarrito }) {
+function GameDetail({ id, onBack, onAgregarAlCarrito, onNavigate }) {
     const [juego, setJuego] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
@@ -130,24 +130,64 @@ function GameDetail({ id, onBack, onAgregarAlCarrito }) {
                 <h1 style={{ margin: 0 }}>{juego.titulo}</h1>
                 <p style={{ color: '#67c1f5', fontWeight: 'bold', marginTop: '0.5rem' }}>{juego.genero}</p>
                 <p>{juego.descripcion}</p>
-                <p style={{ fontSize: '1.25rem', color: '#beee11' }}>${juego.precio}</p>
-                <button
-                onClick={() => onAgregarAlCarrito(juego)}
-                style={{
-                    marginTop: '1rem',
-                    padding: '0.8rem 1.5rem',
-                    borderRadius: '10px',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    fontSize: '1rem',
-                    backgroundColor: '#66c0f4',
-                    color: '#0f1720',
-                }}
-                >
-                🛒 Agregar al carrito
-                </button>
-                <p style={{ fontSize: '0.85rem', color: '#8f98a0' }}>Lanzamiento: {juego.fecha_lanzamiento}</p>
+                <div style={{ marginTop: '0.5rem' }}>
+                  {juego.precio_oferta ? (
+                    <>
+                      <span style={{ textDecoration: 'line-through', color: '#8f98a0', marginRight: '0.5rem', fontSize: '1rem' }}>
+                        ${juego.precio}
+                      </span>
+                      <span style={{ fontSize: '1.25rem', color: '#beee11', fontWeight: 'bold' }}>
+                        ${juego.precio_oferta}
+                      </span>
+                      <span style={{
+                        marginLeft: '0.5rem',
+                        padding: '0.2rem 0.5rem',
+                        borderRadius: '4px',
+                        backgroundColor: '#beee11',
+                        color: '#0f1720',
+                        fontSize: '0.8rem',
+                        fontWeight: 'bold',
+                      }}>
+                        -{juego.descuento}%
+                      </span>
+                    </>
+                  ) : (
+                    <p style={{ fontSize: '1.25rem', color: '#beee11' }}>${juego.precio}</p>
+                  )}
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                  <button
+                    onClick={() => onAgregarAlCarrito(juego)}
+                    style={{
+                        padding: '0.8rem 1.5rem',
+                        borderRadius: '10px',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                        fontSize: '1rem',
+                        backgroundColor: '#66c0f4',
+                        color: '#0f1720',
+                    }}
+                  >
+                    🛒 Agregar al carrito
+                  </button>
+                  <button
+                    onClick={() => onNavigate(`/ofertas?juegoId=${juego.id}`)}
+                    style={{
+                        padding: '0.8rem 1.5rem',
+                        borderRadius: '10px',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                        fontSize: '1rem',
+                        backgroundColor: '#beee11',
+                        color: '#0f1720',
+                    }}
+                  >
+                    🏷️ Oferta
+                  </button>
+                </div>
+                <p style={{ fontSize: '0.85rem', color: '#8f98a0', marginTop: '0.5rem' }}>Lanzamiento: {juego.fecha_lanzamiento}</p>
             </div>
 
             <hr style={{ border: '0', height: '1px', background: '#3a546e', margin: '2rem 0' }} />
